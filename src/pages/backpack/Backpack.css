@@ -2,10 +2,26 @@
     display: flex;
     width: 100%;
     
+    
 
 }
 .Backpack{
     width: 50%;
     background-color: var(--blue);
     padding: 10px 0;
+}
+
+
+div.flex-container2{
+    display: flex;
+    justify-content: center;
+    background-color: lightgray;
+    width: 100%;
+    gap: 100px;
+    border-bottom: 1px solid black;
+}
+
+.item1{
+    margin: 10px;
+    
 }
