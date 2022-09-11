@@ -70,7 +70,7 @@ function Backpack() {
               >
                 Nome do item: {backPack.name}</p>
               <p
-                className='item1'
+                className='item2'
               >
                 Site do produto: {backPack.site}</p>
               <p

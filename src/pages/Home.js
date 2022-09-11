@@ -57,14 +57,15 @@ function Home() {
 
   //useEffect para importar os valores da api
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    fetch(BASE_URL)
+    await fetch (BASE_URL)
       .then(res => res.json())
       .then(data => setCurrentQuote(data.quote))
 
-    setTotal(resultTax + resultIof + amount + resultStateTax)
+    
+    
 
     if (amount <= 500) {
       setCanShowResult(false)
@@ -93,13 +94,16 @@ function Home() {
       "californiaTax": (amount) => amount * (10.5 / 100),
       "floridaTax": (amount) => amount * (7.5 / 100)
     };
-
+    console.log(amount, paymentType)
+    
     setResultTax(taxTypes[taxType]?.(amount));
     setResultIof(paymentTypes[paymentType]?.(amount));
     setStateTax(stateTax); // usa o stateTax para acessar o campo 
     setResultStateTax(taxStates[stateTax]?.(amount))
-
+    setTotal(resultTax + resultIof + amount + resultStateTax)
+    
   }
+
 
   return (
     <div className='container'>

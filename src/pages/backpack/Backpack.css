@@ -26,3 +26,16 @@ div.flex-container2{
     margin: 10px;
     
 }
+
+ p.item2 {
+    margin: 10px;
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+    overflow-y: auto;
+    
+    text-overflow: ellipsis;
+    max-width: 150px;
+    max-height: 100px;
+    
+}
+
+
