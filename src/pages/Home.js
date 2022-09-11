@@ -1,17 +1,16 @@
-import React, {  useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import '../../src/App.css';
 import { OrderStatus } from '../components/OrderStatus';
 import { PaymentType } from '../components/PaymentType';
-import { Product } from '../components/Product';
 import { Results } from '../components/Results';
 import { Tax } from '../components/Tax';
+import { setData } from '../dao/dao-service';
 import './Products';
 
 
 
 
-const BASE_URL = 'https://marketdata.tradermade.com/api/v1/convert?api_key=8jD680eVQNUkiIMGvCF_&from=USD&to=BRL&amount=1'
+const BASE_URL = 'https://marketdata.tradermade.com/api/v1/convert?api_key=0SIBO8_fjWJkSyJ0Z_6E&from=USD&to=BRL&amount=1'
 
 
 
@@ -28,14 +27,33 @@ function Home() {
   const [resultStateTax, setResultStateTax] = useState(0)
   const [resultIof, setResultIof] = useState(0)
   const [total, setTotal] = useState(0)
+  const [name, setName] = useState('')
+  const [site, setSite] = useState('')
 
 
-  const navigate = useNavigate();
 
-  const navigateToProducts = () => {
-
-    navigate('/products');
+  const buttonClickHandler = async (event) => {
+    event.preventDefault()
+    await setData("backpack", {
+      stateTax,
+      total,
+      amount,
+      paymentType,
+      taxType,
+      resultTax,
+      resultStateTax,
+      resultIof,
+      name,
+      site
+    }
+    )
+    alert("Item cadastrado com sucesso")
   };
+
+
+
+
+
 
   //useEffect para importar os valores da api
 
@@ -88,10 +106,16 @@ function Home() {
       <form onSubmit={handleSubmit} className='flex-container'>
         <h1 className='text-white'>Travel Tools</h1>
         <div>
-          <Product handleSelectChange={setAmount} />
-          <button type='submit' className='newProduct' onClick={navigateToProducts}>
-            Criar
-          </button>
+
+
+          <label>Nome do Produto:<input inputMode='numeric' className='input' value={name} onChange={(event) => {
+
+            setName(event.target.value)
+          }} /></label>
+          <label>Site do produto:<input inputMode='numeric' className='input' value={site} onChange={(event) => {
+
+            setSite(event.target.value)
+          }} /></label>
 
           <label>Valor gasto em dolar:<input inputMode='numeric' className='input' value={amount} onChange={(event) => {
 
@@ -115,6 +139,9 @@ function Home() {
         ></Tax>
 
         <div >
+          <button onClick={buttonClickHandler}>
+            Cadastrar
+          </button>
           <button type='submit'>
             Calcular
           </button>

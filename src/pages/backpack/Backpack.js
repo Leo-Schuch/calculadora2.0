@@ -6,14 +6,14 @@ import { formatToBRCurrency, formatToUsCurrency } from '../../utils/currency'
 
 
 
-const BASE_URL = 'https://marketdata.tradermade.com/api/v1/convert?api_key=8jD680eVQNUkiIMGvCF_&from=USD&to=BRL&amount=1'
+const BASE_URL = 'https://marketdata.tradermade.com/api/v1/convert?api_key=0SIBO8_fjWJkSyJ0Z_6E&from=USD&to=BRL&amount=1'
 
 const db = getFirestore()
 const backpackCollectionRf = collection(db, "backpack")
 
 function Backpack() {
   const [backPack, setBackPack] = useState([])
-  const [totalItens, setTotalItens] = useState(0)
+  const [total, setTotal] = useState(0)
   const [currentQuote, setCurrentQuote] = useState('')
   fetch(BASE_URL)
     .then(res => res.json())
@@ -27,12 +27,12 @@ function Backpack() {
 
       const data = await getDocs(backpackCollectionRf)
       const array = data.docs.map((doc) => {
-        sum += doc.data().rsValue
-        setTotalItens(sum)
+        sum += doc.data().total
+        setTotal(sum)
 
         return ({ ...doc.data(), id: doc.id })
       })
-        setBackPack(array);
+      setBackPack(array);
     };
     getBackpack()
 
@@ -40,23 +40,63 @@ function Backpack() {
 
   return (
     <>
-      <div className='new'>
-        <h1 className='Backpack text-white text-center'>Valor total em R$:{totalItens}
+      <div
+        className='new'
+      >
+        <h1
+          className='Backpack text-white text-center'
+        >
+          Valor total {formatToUsCurrency(total)}
         </h1>
-        <h1 className='Backpack text-white text-center' >Valor total em USD: {(totalItens / currentQuote).toFixed(2)}</h1>
+        <h1
+          className='Backpack text-white text-center'
+        >
+          Valor convertido  {formatToBRCurrency((total * currentQuote).toFixed(2))}</h1>
       </div>
-      <p id="counter"></p>
+      <p
+        id="counter"
+      >
+
+      </p>
 
       {
         backPack.map(backPack => {
           return (
-            <div className='flex-container2'>
-              <p className='item1'>Nome do item: {backPack.itemName}</p>
-              <p className='item1'>Tipo de pagamento: {backPack.paymentType}</p>
-              <p className='item1'>Valor em Dolar: {formatToUsCurrency (backPack.usdValue)}</p>
-              <p className='item1'>Tipo de taxa: {backPack.taxOption}</p>
-              <p className='item1'>Valor total de taxa: {backPack.taxTotal}</p>
-              <p className='item1'>Valor em reais: {formatToBRCurrency (((backPack.usdValue)*currentQuote).toFixed(2))}</p>
+            <div
+              className='flex-container2'
+            >
+              <p
+                className='item1'
+              >
+                Nome do item: {backPack.name}</p>
+              <p
+                className='item1'
+              >
+                Site do produto: {backPack.site}</p>
+              <p
+                className='item1'
+              >
+                Tipo de pagamento: {backPack.paymentType}</p>
+              <p
+                className='item1'
+              >
+                Valor do produto: {formatToUsCurrency(backPack.amount)}</p>
+              <p
+                className='item1'
+              >
+                Valor Total do produto : {formatToUsCurrency(backPack.total)}</p>
+              <p
+                className='item1'
+              >
+                Tipo de taxa: {backPack.taxType}</p>
+              <p
+                className='item1'
+              >
+                Estado selecionado: {backPack.stateTax}</p>
+              <p
+                className='item1'
+              >
+                Valor em reais: {formatToBRCurrency(((backPack.total) * currentQuote).toFixed(2))}</p>
 
             </div>
           )
