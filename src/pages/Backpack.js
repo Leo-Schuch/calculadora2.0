@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, {  useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../src/App.css';
 import { OrderStatus } from '../components/OrderStatus';
 import { PaymentType } from '../components/PaymentType';
@@ -10,11 +11,17 @@ import './Products';
 
 
 
-const BASE_URL = 'https://marketdata.tradermade.com/api/v1/convert?api_key=0SIBO8_fjWJkSyJ0Z_6E&from=USD&to=BRL&amount=1'
+const BASE_URL = 'https://marketdata.tradermade.com/api/v1/convert?api_key=cw1bjUaX7yekv4yIvmat&from=USD&to=BRL&amount=1'
 
 
 
 function Home() {
+  const navigate = useNavigate();
+
+  const navigateToHome = () => {
+
+    navigate('/');
+  }
   //O useState nos permite criar estados em um componente criado a partir de uma função, assim como o state presente em componentes criados a partir de classes
   const [amount, setAmount] = useState(0)
   const [paymentType, setPaymentType] = useState('cash')
@@ -50,38 +57,34 @@ function Home() {
     alert("Item cadastrado com sucesso")
   };
 
-
-
-
-
-
-  //useEffect para importar os valores da api
+  useMemo(() => {
+    setTotal(resultTax + resultIof + amount + resultStateTax)
+  },
+    [amount, resultTax, resultIof, resultStateTax]);
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    await fetch (BASE_URL)
+    await fetch(BASE_URL)
       .then(res => res.json())
       .then(data => setCurrentQuote(data.quote))
 
-    
-    
+
+
 
     if (amount <= 500) {
       setCanShowResult(false)
       setErrorMessage('Valor abaixo de 500USD não é tributado')
       return
     }
-    setCanShowResult(true)// if utilizado para prosseguir com os calculos se o valor for acima de 500 usd
-
-    // taxa importação
+    setCanShowResult(true)
 
     const taxTypes = {
       "declare": (amount) => (amount - 500) * (50 / 100),
       "tax-without-declare": (amount) => amount - 500,
       "no-tax-without-declare": () => 0
     };
-
+    // tipo de pagamento
     const paymentTypes = {
       "credit-card": (amount) => amount * 6.38 / 100,
       "cash": (amount) => amount * 1.1 / 100
@@ -94,22 +97,27 @@ function Home() {
       "californiaTax": (amount) => amount * (10.5 / 100),
       "floridaTax": (amount) => amount * (7.5 / 100)
     };
-    console.log(amount, paymentType)
-    
+
+
     setResultTax(taxTypes[taxType]?.(amount));
     setResultIof(paymentTypes[paymentType]?.(amount));
     setStateTax(stateTax); // usa o stateTax para acessar o campo 
     setResultStateTax(taxStates[stateTax]?.(amount))
-    setTotal(resultTax + resultIof + amount + resultStateTax)
+
     
+
   }
 
 
   return (
     <div className='container'>
       <form onSubmit={handleSubmit} className='flex-container'>
+      <button onClick={navigateToHome}>
+            Voltar
+          </button>
         <h1 className='text-white'>Travel Tools</h1>
         <div>
+        
 
 
           <label>Nome do Produto:<input inputMode='numeric' className='input' value={name} onChange={(event) => {

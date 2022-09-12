@@ -3,15 +3,22 @@ import { useEffect, useState } from 'react'
 import './Backpack.css'
 import '../../dao/firebase-config'
 import { formatToBRCurrency, formatToUsCurrency } from '../../utils/currency'
+import { useNavigate } from 'react-router-dom'
 
 
 
-const BASE_URL = 'https://marketdata.tradermade.com/api/v1/convert?api_key=0SIBO8_fjWJkSyJ0Z_6E&from=USD&to=BRL&amount=1'
+const BASE_URL = 'https://marketdata.tradermade.com/api/v1/convert?api_key=cw1bjUaX7yekv4yIvmat&from=USD&to=BRL&amount=1' 
 
 const db = getFirestore()
 const backpackCollectionRf = collection(db, "backpack")
 
 function Backpack() {
+  const navigate = useNavigate();
+
+  const navigateToProducts = () => {
+
+    navigate('/backpack');
+  };
   const [backPack, setBackPack] = useState([])
   const [total, setTotal] = useState(0)
   const [currentQuote, setCurrentQuote] = useState('')
@@ -53,6 +60,12 @@ function Backpack() {
         >
           Valor convertido  {formatToBRCurrency((total * currentQuote).toFixed(2))}</h1>
       </div>
+
+        <div>
+          <button type='submit' className='btn' onClick={navigateToProducts}>
+            Adicionar novo item
+          </button>
+          </div>
       <p
         id="counter"
       >

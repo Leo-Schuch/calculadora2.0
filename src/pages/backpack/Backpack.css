@@ -24,6 +24,8 @@ div.flex-container2{
 
 .item1{
     margin: 10px;
+    max-width: 100px;
+    min-width: 40px;
     
 }
 
@@ -36,6 +38,12 @@ div.flex-container2{
     max-width: 150px;
     max-height: 100px;
     
+}
+.btn  {
+    align-items: center;
+    display: inline-block;
+    text-align: center;
+    cursor:pointer;
 }
 
 

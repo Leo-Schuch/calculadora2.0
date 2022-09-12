@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Backpack from "./pages/backpack/Backpack";
+import Backpack from "./pages/backpack/Home";
 
-import Home from "./pages/Home";
+import Home from "./pages/Backpack";
 import Products from "./pages/Products.js";
 
   
@@ -13,9 +13,9 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         
-          <Route path= "/" index element={<Home />} />
+          <Route path= "/" index element={<Backpack />} />
           <Route path="products" element={<Products />} />
-          <Route path="backpack" element={<Backpack/>} />
+          <Route path="backpack" element={<Home/>} />
 
           
           
